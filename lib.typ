@@ -262,7 +262,7 @@
       date,
       use-smallcaps: use-smallcaps,
     )] else [],
-    footer-descent: 0pt,
+    footer-descent: 35%,
   )
 
   // set paragraph spacing
@@ -779,7 +779,7 @@
       lang_data,
       use-smallcaps: use-smallcaps,
     )] else [],
-    footer-descent: 2mm,
+    footer-descent: 35%,
   )
 
   // set paragraph spacing
