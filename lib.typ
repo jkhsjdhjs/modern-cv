@@ -25,8 +25,6 @@
 #let website-icon = box(fa-icon("globe", fill: color-darknight))
 #let address-icon = box(fa-icon("location-crosshairs", fill: color-darknight))
 
-// const variables
-#let contact-item-inset = (left: 4pt)
 
 /// Helpers
 
@@ -123,6 +121,181 @@
   ]
 }
 
+// Helper for contact items in the header.
+// - item (dictionary): The contact item with the following fields: text (string, required), icon (box, optional), link (string, optional)
+// - link-prefix (string): The prefix to use for the link (e.g. "mailto:")
+// - inset (dictionary): Inset of each individual contact item
+#let __contact_item(item, link-prefix: "", inset: (:)) = {
+  box[
+    #set align(bottom)
+    #if ("icon" in item) {
+      [#item.icon]
+    }
+    // Then modify the selection to use the constant:
+    #box(inset: inset)[
+      #if ("link" in item) {
+        link(link-prefix + item.link)[#item.text]
+      } else {
+        item.text
+      }
+    ]
+  ]
+}
+
+/// Format contact items with the respective Font Awesome icon and return them as list
+///
+/// - author (dictionary): The dictionary containing the contact item values
+/// - item-inset (dictionary): Inset of each individual contact item
+/// -> array (of content)
+#let __format_contact_items(author, item-inset: (:)) = {
+  let contact-item(item, link-prefix: "") = {
+    __contact_item(item, link-prefix: link-prefix, inset: item-inset)
+  }
+
+  let items = ()
+
+  if "birth" in author {
+    items.push(
+      contact-item(
+        (text: author.birth, icon: birth-icon),
+      ),
+    )
+  }
+  if "phone" in author {
+    items.push(
+      contact-item(
+        (text: author.phone, icon: phone-icon, link: author.phone),
+        link-prefix: "tel:",
+      ),
+    )
+  }
+  if "email" in author {
+    items.push(
+      contact-item(
+        (text: author.email, icon: email-icon, link: author.email),
+        link-prefix: "mailto:",
+      ),
+    )
+  }
+  if "homepage" in author {
+    items.push(
+      contact-item(
+        (text: author.homepage, icon: homepage-icon, link: author.homepage),
+      ),
+    )
+  }
+  if "github" in author {
+    items.push(
+      contact-item(
+        (text: author.github, icon: github-icon, link: author.github),
+        link-prefix: "https://github.com/",
+      ),
+    )
+  }
+  if "gitlab" in author {
+    items.push(
+      contact-item(
+        (text: author.gitlab, icon: gitlab-icon, link: author.gitlab),
+        link-prefix: "https://gitlab.com/",
+      ),
+    )
+  }
+  if "bitbucket" in author {
+    items.push(
+      contact-item(
+        (text: author.bitbucket, icon: bitbucket-icon, link: author.bitbucket),
+        link-prefix: "https://bitbucket.org/",
+      ),
+    )
+  }
+  if "linkedin" in author {
+    items.push(
+      contact-item(
+        (
+          text: author.firstname + " " + author.lastname,
+          icon: linkedin-icon,
+          link: author.linkedin,
+        ),
+        link-prefix: "https://www.linkedin.com/in/",
+      ),
+    )
+  }
+  if "twitter" in author {
+    items.push(
+      contact-item(
+        (text: "@" + author.twitter, icon: twitter-icon, link: author.twitter),
+        link-prefix: "https://twitter.com/",
+      ),
+    )
+  }
+  if "bluesky" in author {
+    items.push(
+      contact-item(
+        (text: "@" + author.bluesky, icon: bluesky-icon, link: author.bluesky),
+        link-prefix: "https://bsky.app/profile/",
+      )
+    )
+  }
+  if "mastodon" in author {
+    items.push(
+      contact-item(
+        (text: "@" + author.mastodon, icon: mastodon-icon, link: author.mastodon),
+        link-prefix: "https://mastodon.social/@"
+      )
+    )
+  }
+  if "scholar" in author {
+    let fullname = str(author.firstname + " " + author.lastname)
+    items.push(
+      contact-item(
+        (text: fullname, icon: google-scholar-icon, link: author.scholar),
+        link-prefix: "https://scholar.google.com/citations?user=",
+      ),
+    )
+  }
+  if "orcid" in author {
+    items.push(
+      contact-item(
+        (text: author.orcid, icon: orcid-icon, link: author.orcid),
+        link-prefix: "https://orcid.org/",
+      ),
+    )
+  }
+  if "website" in author {
+    items.push(
+      contact-item(
+        (text: author.website, icon: website-icon, link: author.website),
+      ),
+    )
+  }
+  if "custom" in author and type(author.custom) == array {
+    for item in author.custom {
+      if "text" in item {
+        items.push(
+          contact-item(
+            (
+              text: item.text,
+              icon: if ("icon" in item) {
+                box(fa-icon(item.icon, fill: color-darknight))
+              } else {
+                none
+              },
+              link: if ("link" in item) {
+                item.link
+              } else {
+                none
+              },
+            ),
+            link-prefix: "",
+          ),
+        )
+      }
+    }
+  }
+
+  items
+}
+
 /// Show a link with an icon, specifically for Github projects
 /// *Example*
 /// #example(`resume.github-link("ptsouchlos/awesome-resume")`)
@@ -202,6 +375,7 @@
   author: (:),
   profile-picture: image,
   contact-items-separator: h(10pt),
+  contact-items-inset: (left: 4pt),
   date: datetime.today().display("[month repr:long] [day], [year]"),
   accent-color: default-accent-color,
   colored-headers: true,
@@ -322,8 +496,10 @@
     align(center)[
       #if ("address" in author) [
         #if show-address-icon [
-          #address-icon
-          #box(inset: contact-item-inset)[#text(author.address)]
+          #__contact_item((
+            icon: address-icon,
+            text: text(author.address),
+          ), inset: contact-items-inset)
         ] else [
           #text(author.address)
         ]
@@ -331,174 +507,13 @@
     ]
   }
 
-  // Helper for contact items in the header.
-  // - item (dictionary): The contact item with the following fields: text (string, required), icon (box, optional), link (string, optional)
-  // - link-prefix (string): The prefix to use for the link (e.g. "mailto:")
-  let contact-item(item, link-prefix: "") = {
-    box[
-      #set align(bottom)
-      #if ("icon" in item) {
-        [#item.icon]
-      }
-      // Then modify the selection to use the constant:
-      #box(inset: contact-item-inset)[
-        #if ("link" in item) {
-          link(link-prefix + item.link)[#item.text]
-        } else {
-          item.text
-        }
-      ]
-    ]
-  }
-
   // Contact section
   let contacts = {
     set box(height: 9pt)
-    let items = ()
+    set text(size: 9pt, weight: "regular", style: "normal")
 
-    if "birth" in author {
-      items.push(
-        contact-item(
-          (text: author.birth, icon: birth-icon),
-        ),
-      )
-    }
-    if "phone" in author {
-      items.push(
-        contact-item(
-          (text: author.phone, icon: phone-icon, link: author.phone),
-          link-prefix: "tel:",
-        ),
-      )
-    }
-    if "email" in author {
-      items.push(
-        contact-item(
-          (text: author.email, icon: email-icon, link: author.email),
-          link-prefix: "mailto:",
-        ),
-      )
-    }
-    if "homepage" in author {
-      items.push(
-        contact-item(
-          (text: author.homepage, icon: homepage-icon, link: author.homepage),
-        ),
-      )
-    }
-    if "github" in author {
-      items.push(
-        contact-item(
-          (text: author.github, icon: github-icon, link: author.github),
-          link-prefix: "https://github.com/",
-        ),
-      )
-    }
-    if "gitlab" in author {
-      items.push(
-        contact-item(
-          (text: author.gitlab, icon: gitlab-icon, link: author.gitlab),
-          link-prefix: "https://gitlab.com/",
-        ),
-      )
-    }
-    if "bitbucket" in author {
-      items.push(
-        contact-item(
-          (text: author.bitbucket, icon: bitbucket-icon, link: author.bitbucket),
-          link-prefix: "https://bitbucket.org/",
-        ),
-      )
-    }
-    if "linkedin" in author {
-      items.push(
-        contact-item(
-          (
-            text: author.firstname + " " + author.lastname,
-            icon: linkedin-icon,
-            link: author.linkedin,
-          ),
-          link-prefix: "https://www.linkedin.com/in/",
-        ),
-      )
-    }
-    if "twitter" in author {
-      items.push(
-        contact-item(
-          (text: "@" + author.twitter, icon: twitter-icon, link: author.twitter),
-          link-prefix: "https://twitter.com/",
-        ),
-      )
-    }
-    if "bluesky" in author {
-      items.push(
-        contact-item(
-          (text: "@" + author.bluesky, icon: bluesky-icon, link: author.bluesky),
-          link-prefix: "https://bsky.app/profile/",
-        )
-      )
-    }
-    if "mastodon" in author {
-      items.push(
-        contact-item(
-          (text: "@" + author.mastodon, icon: mastodon-icon, link: author.mastodon),
-          link-prefix: "https://mastodon.social/@"
-        )
-      )
-    }
-    if "scholar" in author {
-      let fullname = str(author.firstname + " " + author.lastname)
-      items.push(
-        contact-item(
-          (text: fullname, icon: google-scholar-icon, link: author.scholar),
-          link-prefix: "https://scholar.google.com/citations?user=",
-        ),
-      )
-    }
-    if "orcid" in author {
-      items.push(
-        contact-item(
-          (text: author.orcid, icon: orcid-icon, link: author.orcid),
-          link-prefix: "https://orcid.org/",
-        ),
-      )
-    }
-    if "website" in author {
-      items.push(
-        contact-item(
-          (text: author.website, icon: website-icon, link: author.website),
-        ),
-      )
-    }
-    if "custom" in author and type(author.custom) == array {
-      for item in author.custom {
-        if "text" in item {
-          items.push(
-            contact-item(
-              (
-                text: item.text,
-                icon: if ("icon" in item) {
-                  box(fa-icon(item.icon, fill: color-darknight))
-                } else {
-                  none
-                },
-                link: if ("link" in item) {
-                  item.link
-                } else {
-                  none
-                },
-              ),
-              link-prefix: "",
-            ),
-          )
-        }
-      }
-    }
-
-    align(center)[
-      #set text(size: 9pt, weight: "regular", style: "normal")
-      #items.join(contact-items-separator)
-    ]
+    let items = __format_contact_items(author, item-inset: contact-items-inset)
+    align(center, items.join(contact-items-separator))
   }
 
   if profile-picture != none {
@@ -701,6 +716,8 @@
 #let coverletter(
   author: (:),
   profile-picture: image,
+  contact-items-separator: box(width: 6pt, align(center, sym.bar.v)),
+  contact-items-inset: (:),
   date: datetime.today().display("[month repr:long] [day], [year]"),
   accent-color: default-accent-color,
   language: "en",
@@ -823,8 +840,10 @@
     align(right)[
       #if ("address" in author) [
         #if show-address-icon [
-          #address-icon
-          #box[#text(author.address)]
+          #__contact_item((
+            icon: address-icon,
+            text: text(author.address),
+          ), inset: contact-items-inset)
         ] else [
           #text(author.address)
         ]
@@ -833,74 +852,10 @@
   }
 
   let contacts = {
-    let separator = [ #box(sym.bar.v) ]
-    let author_list = ()
+    set text(size: 8pt, weight: "light", style: "normal")
 
-    if ("phone" in author) {
-      author_list.push[
-        #phone-icon
-        #box[#link("tel:" + author.phone)[#author.phone]]
-      ]
-    }
-    if ("email" in author) {
-      author_list.push[
-        #email-icon
-        #box[#link("mailto:" + author.email)[#author.email]]
-      ]
-    }
-    if ("github" in author) {
-      author_list.push[
-        #github-icon
-        #box[#link("https://github.com/" + author.github)[#author.github]]
-      ]
-    }
-    if ("linkedin" in author) {
-      author_list.push[
-        #linkedin-icon
-        #box[
-          #link(
-            "https://www.linkedin.com/in/" + author.linkedin,
-          )[#author.firstname #author.lastname]
-        ]
-      ]
-    }
-    if ("orcid" in author) {
-      author_list.push[
-        #orcid-icon
-        #box[#link("https://orcid.org/" + author.orcid)[#author.orcid]]
-      ]
-    }
-    if ("website" in author) {
-      author_list.push[
-        #website-icon
-        #box[#link(author.website)[#author.website]]
-      ]
-    }
-
-    if ("custom" in author and type(author.custom) == array) {
-      for item in author.custom {
-        if ("text" in item) {
-          author_list.push[
-            #if ("icon" in item) [
-              #box(fa-icon(item.icon, fill: color-darknight))
-            ]
-            #box[
-              #if ("link" in item) [
-                #link(item.link)[#item.text]
-              ] else [
-                #item.text
-              ]
-            ]
-          ]
-        }
-      }
-    }
-
-
-    align(right)[
-      #set text(size: 8pt, weight: "light", style: "normal")
-      #author_list.join(separator)
-    ]
+    let items = __format_contact_items(author)
+    align(right, items.join(contact-items-separator))
   }
 
   let letter-heading = {
