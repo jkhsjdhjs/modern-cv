@@ -688,18 +688,18 @@
 /// - lang-data (dictionary): Structure that contains all the language data. Used with `linguify`
 /// - language (string): The language of the cover letter.
 /// - author (string): The author of the cover letter.
-#let default-signature(lang-data, language, author) = {
-  align(bottom)[
-    #pad(bottom: 2em)[
-      #text(weight: "light")[#linguify("sincerely", from: lang-data)#if (
-          language != "de"
-        ) [#sym.comma]] \
-      #if ("signature" in author) {
-        author.signature
-      }
-      #text(weight: "bold")[#author.firstname #author.lastname]
-    ]
-  ]
+/// - alignment (alignment): Alignment of the signature.
+/// - padding (dictionary): Padding of the signature.
+#let default-signature(lang-data, language, author, alignment, padding) = {
+  align(alignment, pad(..padding)[
+    #text(weight: "light")[#linguify("sincerely", from: lang-data)#if (
+        language != "de"
+      ) [#sym.comma]] \
+    #if ("signature" in author) {
+      author.signature
+    } \
+    #text(weight: "bold")[#author.firstname #author.lastname]
+  ])
 }
 
 #let default-closing(lang-data) = {
@@ -715,6 +715,8 @@
 /// Cover letter template that is inspired by the Awesome CV Latex template by posquit0. This template can loosely be considered a port of the original Latex template.
 /// This coverletter template is designed to be used with the resume template.
 /// - author (dictionary): Structure that takes in all the author's information. The following fields are required: firstname, lastname, positions. The following fields are used if available: email, phone, github, linkedin, orcid, address, website, custom. The `custom` field is an array of additional entries with the following fields: text (string, required), icon (string, optional Font Awesome icon name), link (string, optional).
+/// - signature-padding (dictionary): Padding of the signature.
+/// - signature-alignment (alignment): Alignment of the signature.
 /// - profile-picture (image): The profile picture of the author. This will be cropped to a circle and should be square in nature.
 /// - date (datetime): The date the cover letter was created. This will default to the current date.
 /// - accent-color (color): The accent color of the cover letter
@@ -734,6 +736,8 @@
   profile-picture: image,
   contact-items-separator: box(width: 6pt, align(center, sym.bar.v)),
   contact-items-inset: (:),
+  signature-padding: (top: 1em),
+  signature-alignment: left,
   date: datetime.today().display("[month repr:long] [day], [year]"),
   accent-color: default-accent-color,
   language: "en",
@@ -757,7 +761,13 @@
   let lang_data = toml("lang.toml")
 
   if signature == none {
-    signature = default-signature(lang_data, language, author)
+    signature = default-signature(
+      lang_data,
+      language,
+      author,
+      signature-alignment,
+      signature-padding,
+    )
   }
 
   if closing == none {
