@@ -718,13 +718,13 @@
 /// Cover letter template that is inspired by the Awesome CV Latex template by posquit0. This template can loosely be considered a port of the original Latex template.
 /// This coverletter template is designed to be used with the resume template.
 /// - author (dictionary): Structure that takes in all the author's information. The following fields are required: firstname, lastname, positions. The following fields are used if available: email, phone, github, linkedin, orcid, address, website, custom. The `custom` field is an array of additional entries with the following fields: text (string, required), icon (string, optional Font Awesome icon name), link (string, optional).
+/// - profile-picture (image): The profile picture of the author. This will be cropped to a circle and should be square in nature.
+/// - contact-items-separator (content): Separator to use between the "contact" items in the header of the coverletter. This includes items like your email, website, Github account, phone number and so on. The default is blank spacing.
+/// - contact-items-inset (dictionary): Gap between contact item icon and contact item text.
 /// - heading-padding (dictionary): Padding of the salutation line.
 /// - signature-padding (dictionary): Padding of the signature.
 /// - signature-alignment (alignment): Alignment of the signature.
 /// - par-spacing (length): Spacing between paragraphs of the letter content.
-/// - profile-picture (image): The profile picture of the author. This will be cropped to a circle and should be square in nature.
-/// - contact-items-separator (content): Separator to use between the "contact" items in the header of the coverletter. This includes items like your email, website, Github account, phone number and so on. The default is blank spacing.
-/// - contact-items-inset (dictionary): Gap between contact item icon and contact item text.
 /// - date (datetime): The date the cover letter was created. This will default to the current date.
 /// - accent-color (color): The accent color of the cover letter
 /// - language (string): The language of the cover letter, defaults to "en". See lang.toml for available languages
