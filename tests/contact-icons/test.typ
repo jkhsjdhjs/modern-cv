@@ -11,6 +11,7 @@
     gitlab: "ptsouchlos",
     bitbucket: "DeveloperPaul123",
     twitter: "typstapp",
+    telegram: "durov",
     bluesky: "ptsou.bsky.social",
     mastodon: "devpaul",
     codeberg: "ptsou",
@@ -29,6 +30,21 @@
         text: "Youtube Channel",
         icon: "youtube",
         link: "https://example.com",
+      ),
+      // `icon` accepts any Font Awesome icon name, not just the ones with a
+      // dedicated `author` field (e.g. self-hosted Forgejo instances).
+      (
+        text: "My Forgejo Instance",
+        icon: "forgejo",
+        link: "https://forge.example.com/js",
+      ),
+      // `icon` and `link` are both optional on a `custom` entry.
+      (
+        text: "No Icon, Has Link",
+        link: "https://example.com/no-icon",
+      ),
+      (
+        text: "No Icon, No Link",
       ),
     ),
   ),
