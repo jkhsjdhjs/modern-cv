@@ -1,5 +1,5 @@
 #import "@preview/fontawesome:0.6.2": fa-icon
-#import "colors.typ" as colors
+#import "colors.typ"
 
 #let linkedin = box(fa-icon("linkedin", fill: colors.darknight))
 #let telegram = box(fa-icon("telegram", fill: colors.darknight))

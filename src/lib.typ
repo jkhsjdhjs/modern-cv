@@ -1,6 +1,6 @@
-#import "colors.typ" as colors
-#import "helpers.typ" as helpers
-#import "icons.typ" as icons
+#import "colors.typ"
+#import "helpers.typ"
+#import "icons.typ"
 #import "coverletter.typ": coverletter, hiring-entity-info, letter-heading
 #import "resume.typ": (
   justified-header, resume, resume-certification, resume-entry, resume-gpa,

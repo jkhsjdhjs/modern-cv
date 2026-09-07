@@ -1,6 +1,6 @@
 #import "@preview/linguify:0.5.0": linguify
-#import "colors.typ" as colors
-#import "icons.typ" as icons
+#import "colors.typ"
+#import "icons.typ"
 
 // Common helper functions
 #let format-author-name(author, language) = {

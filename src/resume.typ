@@ -1,6 +1,6 @@
-#import "colors.typ" as colors
-#import "helpers.typ" as helpers
-#import "icons.typ" as icons
+#import "colors.typ"
+#import "helpers.typ"
+#import "icons.typ"
 
 #let __footer(author, language, lang_data, date, use-smallcaps: true) = {
   set text(fill: gray, size: 8pt)
