@@ -236,7 +236,10 @@
     set box(height: 9pt)
     set text(size: 9pt, weight: "regular", style: "normal")
 
-    let items = helpers.format-contact-items(author, item-inset: contact-items-inset)
+    let items = helpers.format-contact-items(
+      author,
+      item-inset: contact-items-inset,
+    )
     align(center, items.join(contact-items-separator))
   }
 

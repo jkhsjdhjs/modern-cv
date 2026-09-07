@@ -50,7 +50,10 @@
 #let __default-closing(lang-data) = {
   align(bottom)[
     #text(weight: "light", style: "italic")[
-      #helpers.linguify("attached", from: lang-data)#sym.colon #helpers.linguify(
+      #helpers.linguify(
+        "attached",
+        from: lang-data,
+      )#sym.colon #helpers.linguify(
         "curriculum-vitae",
         from: lang-data,
       )]
