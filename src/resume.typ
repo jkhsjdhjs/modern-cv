@@ -322,16 +322,19 @@
 }
 
 /// Show cumulative GPA.
-/// *Example:*
-/// #example(`resume.resume-gpa("3.5", "4.0")`)
+///
+/// *Example*
+/// #example(`#resume.resume-gpa("3.5", "4.0")`)
 #let resume-gpa(numerator, denominator) = {
   set text(size: 12pt, style: "italic", weight: "light")
   text[Cumulative GPA: #box[#strong[#numerator] / #denominator]]
 }
 
 /// Show a certification in the resume.
-/// *Example:*
-/// #example(`resume.resume-certification("AWS Certified Solutions Architect - Associate", "Jan 2020")`)
+///
+/// *Example*
+/// #example(`#resume.resume-certification("AWS Certified Solutions Architect - Associate", "Jan 2020")`)
+///
 /// - certification (content): The certification
 /// - date (content): The date the certification was achieved
 #let resume-certification(certification, date) = {
