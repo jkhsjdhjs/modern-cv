@@ -6,7 +6,7 @@
   "resume.typ",
   "coverletter.typ",
   "colors.typ",
-  "icons.typ"
+  "icons.typ",
 )
 
 #let public-api-docs = tidy.parse-module(
@@ -15,20 +15,20 @@
   old-syntax: true,
   scope: (
     resume: lib,
-  )
+  ),
 )
 
 #let helper-docs = tidy.parse-module(
   read("../src/helpers.typ"),
   name: "Private Helper Functions",
-  old-syntax: true
+  old-syntax: true,
 )
 
 = Modern CV
 
 #tidy.show-module(
   public-api-docs,
-  omit-private-definitions: true
+  omit-private-definitions: true,
 )
 
 #pagebreak()
