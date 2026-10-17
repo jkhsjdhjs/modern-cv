@@ -1,4 +1,4 @@
-#import "@local/modern-cv:0.11.0": *
+#import "../../src/lib.typ": *
 
 // Exercises the CJK name-order branch of resume() (the
 // `if language == "zh" or language == "ja"` check): lastname comes first,

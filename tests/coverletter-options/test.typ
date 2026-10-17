@@ -1,4 +1,4 @@
-#import "@local/modern-cv:0.11.0": *
+#import "../../src/lib.typ": *
 
 // exercise non-default coverletter() options: explicit `signature`/`closing`
 // content, bypassing default-signature()/default-closing() entirely. Every

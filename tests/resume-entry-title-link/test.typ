@@ -1,4 +1,4 @@
-#import "@local/modern-cv:0.11.0": *
+#import "../../src/lib.typ": *
 
 // resume-entry()'s `title-link` wraps the title in a `link()` rather than
 // rendering it as plain text. A visual snapshot can't distinguish the two

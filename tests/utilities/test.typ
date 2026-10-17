@@ -1,4 +1,4 @@
-#import "@local/modern-cv:0.11.0": *
+#import "../../src/lib.typ": *
 
 // setup the document like we do for the resume
 #let font = "Source Sans 3"

@@ -1,4 +1,4 @@
-#import "@local/modern-cv:0.11.0": *
+#import "../../src/lib.typ": *
 
 // hiring-entity-info() takes its own `language` argument, independent of
 // coverletter()'s — its docstring calls this out explicitly, since it's

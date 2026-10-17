@@ -1,7 +1,7 @@
 // Regression test for https://github.com/ptsouchlos/modern-cv/issues/204
 // ("[Bug] Date localization"): dates must be formatted per the `language`
 // argument instead of always using the US "Month Day, Year" format.
-#import "@local/modern-cv:0.11.0": helpers.format-date
+#import "../../src/helpers.typ": format-date
 
 #let d = datetime(year: 2026, month: 8, day: 28)
 
