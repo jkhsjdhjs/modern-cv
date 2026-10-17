@@ -1,5 +1,4 @@
 #import "colors.typ"
-#import "helpers.typ"
 #import "icons.typ"
 #import "coverletter.typ": coverletter, hiring-entity-info, letter-heading
 #import "resume.typ": (
